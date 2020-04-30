@@ -1,0 +1,6 @@
+# Generate an exclude list for Tivoli Storage Manager (TSM) backup
+# Rationale: Opencast creates plenty of snap shots. A snap shot
+# contains hard links to previous data but TSM can't handle hard links
+# and copies the data instead of the link. This causes lots of duplicate
+# data on tape.
+21 48 * * *   root    /opt/opencast-tsm-config/make_exclude.sh
