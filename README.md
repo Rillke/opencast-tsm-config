@@ -21,9 +21,9 @@ during workflow processing, Opencast creates a new snapshot.
 
 For each snapshot Opencast creates a sub directory, starting with /0, the next
 snapshot operation would create /1.
-Snapshots create revision history of each media package. Each sub directory
+Snapshots create a revision history of each media package. Each sub directory
 contains the complete media package contents at a time. In order to achieve
-complete without copying identical data, Opencast makes use of hard links:
+completeness without copying identical data, Opencast makes use of hard links:
 Identical files from previous media packages are hardlinked to any new snapshot.
 Now you can, in theory, delete any previous version of the media package without
 loosing data in the current snapshot. You can also take one snapshot (i.e. one
@@ -35,7 +35,7 @@ IBM Tivoli Storage Manager, on the other hand, does not handle hard links well.
 Instead of storing references to an inode, like Opencast, it will duplicate
 files sharing one inode on tape or whatever storage medium it uses.
 
-This lead to a backup with about 25-times the size of the data stored on disk.
+This leads to a backup with about 25-times the size of the data stored on disk.
 
 ## How to avoid data duplication? The general idea.
 
