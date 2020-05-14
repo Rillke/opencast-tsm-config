@@ -72,8 +72,9 @@ filter_episodes_by_modified_date() {
 
 # get number of currently Workflow Instances
 get_number_of_running_wf() {
+  limit=$((OC_MAX_CONCURRENT_WFS+1))
   ret=$(curl $CURL_OPT -f --digest -u "${OC_USER}:${OC_PASSWORD}" -H "X-Requested-Auth: Digest" \
-      "${OC_ADMIN_URL}/api/workflows?filter=state%3Arunning&limit=10")
+      "${OC_ADMIN_URL}/api/workflows?filter=state%3Arunning&limit=$limit")
   # shellcheck disable=SC2181
   [ $? -ne "0" ] && echo "Get Number of Running WFs failed" && exit
   len="${#ret}"
@@ -86,7 +87,7 @@ get_number_of_running_wf() {
 
 is_wf_running_on_episode() {
   episode_id="$1"
-  url="${OC_ADMIN_URL}/api/workflows?filter=state%3Arunning%2Cevent_identifier%3A${episode_id}&limit=10"
+  url="${OC_ADMIN_URL}/api/workflows?filter=state%3Arunning%2Cevent_identifier%3A${episode_id}&limit=1"
   ret=$(curl $CURL_OPT -f --digest -u "${OC_USER}:${OC_PASSWORD}" -H "X-Requested-Auth: Digest" "$url")
   # shellcheck disable=SC2181
   [ $? -ne "0" ] && echo "Get Running WFs on episode failed" && return 1
@@ -111,11 +112,11 @@ schedule_wf() {
 schedule_wfs() {
   while IFS= read -r episode_id; do
 
-    while [ "$(get_number_of_running_wf)" -gt "$OC_MAX_CONCURRENT_WFS" ]; do
+    while [ "$(get_number_of_running_wf)" -ge "$OC_MAX_CONCURRENT_WFS" ]; do
       echo "Waiting 10s for system load to decline."
       sleep 10
     done
-    echo "Currently running $(get_number_of_running_wf) WFs"
+    echo "Currently running $(get_number_of_running_wf) of $OC_MAX_CONCURRENT_WFS WFs"
 
     schedule_wf "$episode_id"
     sleep "$SLEEP_TIME"
@@ -123,7 +124,7 @@ schedule_wfs() {
 }
 
 info() {
-  echo "Currently running $(get_number_of_running_wf) WFs"
+  echo "Currently running $(get_number_of_running_wf) of $OC_MAX_CONCURRENT_WFS WFs"
 }
 
 help() {
