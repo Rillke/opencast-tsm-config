@@ -46,7 +46,10 @@ CURL_OPT="--silent"
 # output the episode (UU)IDs efficiently
 list_episodes_in_archive() {
   cd "$OC_ARCHIVE_DIR"
-  echo ./** | tr " " "\n" | grep -oE '\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b'
+  # for sorted output use
+  # echo ./** | tr " " "\n" | ...
+  # however, sorting is expensive in huge dirs
+  find . -maxdepth 1 -type d | grep -oE '\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b'
 }
 
 # input (pipe): episode IDs. One per line.
@@ -60,7 +63,7 @@ filter_episodes_by_modified_date() {
       ((number_of_subdirs--))
       (("$number_of_subdirs" < "$SNAPSHOT_COUNT_THRESHOLD")) && continue
 
-      number_of_files_newer=$(find . -mtime -"${SNAPSHOTS_MUST_BE_OLDER_THAN}" | wc -l)
+      number_of_files_newer=$(find . -mtime -"${SNAPSHOTS_MUST_BE_OLDER_THAN}" -maxdepth 1 -type d | wc -l)
       (("$number_of_files_newer" > "0")) && continue
 
       echo "$episode_id"
