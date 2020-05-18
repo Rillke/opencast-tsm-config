@@ -117,6 +117,7 @@ exclude.dir      /var/lib/mysql
 exclude          /var/lib/docker/.../*
 include          /var/lib/docker/volumes/.../*
 exclude.dir      /opt/nfsexport/opencast_prod/opencast/workspace
+exclude.dir      /opt/nfsexport/opencast_prod/opencast/files
 ```
 4. Do a test run of the script and inspect the output files
 ```
