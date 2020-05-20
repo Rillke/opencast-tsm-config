@@ -118,6 +118,8 @@ exclude          /var/lib/docker/.../*
 include          /var/lib/docker/volumes/.../*
 exclude.dir      /opt/nfsexport/opencast_prod/opencast/workspace
 exclude.dir      /opt/nfsexport/opencast_prod/opencast/files
+exclude.dir      /opt/nfsexport/opencast_prod/solr-indexes
+exclude.dir      /opt/nfsexport/opencast_prod/index
 ```
 4. Do a test run of the script and inspect the output files
 ```
@@ -201,7 +203,7 @@ raise `$min_size_MB` in `exclude_list.php`.
 
 * Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-91-generic x86_64)
 * IBM Spectrum Protect-Client für Sichern/Archivieren Version 8, Release 1, Stufe 4.0
-* Opencast 7.6
+* Opencast 7.7
 * |inclexcl.list| = 87016
 * Time to generate exclude list: roughly 2 min
 
@@ -247,4 +249,29 @@ Datenübertragungsgeschwindigkeit für Aggregat:       7.342,33 KB/Sek
 Objekte komprimiert um:                                     0 %
 Gesamtverhältnis der Datenreduktion:                    99,72 %
 Abgelaufene Verarbeitungszeit:                       13:20:16
+```
+
+Some days after deleting old snapshots (while keeping recently changed snapshots, and preventing duplicates using inclexcl.list):
+
+* |inclexcl.list| = 7033
+
+```
+Gesamtzahl überprüfter Objekte:                     1.481.262
+Gesamtzahl gesicherter Objekte:                         9.195
+Gesamtzahl aktualisierter Objekte:                          0
+Gesamtzahl erneut gebundener Objekte:                       0
+Gesamtzahl gelöschter Objekte:                              0
+Gesamtzahl verfallener Objekte:                           608
+Gesamtzahl fehlgeschlagener Objekte:                        0
+Gesamtzahl verschlüsselter Objekte:                         0
+Gesamtzahl vergrößerter Objekte:                            0
+Gesamtzahl Wiederholungen:                                  0
+Gesamtzahl überprüfter Byte:                            25,94 TB
+Gesamtzahl übertragener Byte:                          421,57 GB
+Datenübertragungszeit:                               3.036,50 Sek.
+Datenübertragungsgeschwindigkeit im Netz:          145.579,79 KB/Sek
+Datenübertragungsgeschwindigkeit für Aggregat:      51.711,10 KB/Sek
+Objekte komprimiert um:                                     0 %
+Gesamtverhältnis der Datenreduktion:                    98,42 %
+Abgelaufene Verarbeitungszeit:                       02:22:28
 ```
