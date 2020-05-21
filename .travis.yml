@@ -1,0 +1,23 @@
+sudo: false
+
+install: skip
+
+jobs:
+  include:
+    - stage: test
+      env: name=asset-delete
+      language: shell
+      script:
+        - shellcheck asset-delete/*.sh
+
+    - stage: test
+      env: name=exclude-hardlinks
+      language: shell
+      script:
+        - shellcheck exclude-hardlinks/*.sh
+
+    - stage: test
+      env: name=exclude-hardlinks-php
+      language: php
+      script:
+        - php -l exclude-hardlinks/*.php

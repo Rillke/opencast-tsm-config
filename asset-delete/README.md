@@ -6,7 +6,7 @@ The snapshot operation allows you to take a new, versioned snapshot of a media p
 
 If you run Opencast with a shared storage hard links can be used to link files instead of copying them. The storage consumption remains low. But when you backup such a storage with TSM every hardlink is dissolved and you end up with multiple of separated file to be stored and the amount of data that has to stored increases rapidly.
 
-This helper script deletes unused, old snapshots and reduces the amount of data that has to be processed and stored by the TSM backup. The ability to define filter [parameters](#parameter) enables the script to  take care that a production system is not overloaded by starting these additional, normally very fast workflow.
+This helper script deletes unused, old snapshots and reduces the amount of data that has to be processed and stored by the TSM backup. The ability to define filter [parameters](#parameters) enables the script to  take care that a production system is not overloaded by starting these additional, normally very fast workflow.
 
 ## Dependencies
 

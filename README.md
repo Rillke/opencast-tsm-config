@@ -1,5 +1,9 @@
 # Opencast TSM Backup Configuration
 
+[![Build Status
+](https://travis-ci.org/Rillke/pencast-tsm-config.svg?branch=master)
+](https://travis-ci.org/Rillke/pencast-tsm-config)
+
 Important note: You are solely responsible for any actions towards your backup.
 Although we haven't intentionally put any mistakes here, you should triple-check
 the scripts before execution. Ask you backup admin for help and review.
