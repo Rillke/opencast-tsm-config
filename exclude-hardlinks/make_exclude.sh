@@ -10,4 +10,4 @@ rm  restore_links_*.sh.gz 2> /dev/null
 
 /bin/gzip  restore_links_*.sh > /dev/null
 
-cat /opt/tivoli/tsm/client/ba/bin/inclexcl.list.base /opt/opencast-tsm-config/inclexclude.lst > /opt/tivoli/tsm/client/ba/bin/inclexcl.list
+cat /opt/tivoli/tsm/client/ba/bin/inclexcl.list.base /opt/opencast-tsm-config/exclude-hardlinks/inclexclude.lst > /opt/tivoli/tsm/client/ba/bin/inclexcl.list

@@ -3,4 +3,7 @@
 # contains hard links to previous data but TSM can't handle hard links
 # and copies the data instead of the link. This causes lots of duplicate
 # data on tape.
-21 48 * * *   root    /opt/opencast-tsm-config/make_exclude.sh
+# TODO: Make sure the script finishes before TSM starts a backup, i.e.
+# test script runtime and add sufficient time to allow the run time to
+# grow with your archive size without missing TSM's start.
+21 48 * * *   root    /opt/opencast-tsm-config/exclude-hardlinks/make_exclude.sh
