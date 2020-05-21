@@ -1,0 +1,13 @@
+# Schedules a workflow with ID *asset-delete* and deletes old snapshots
+# in the archive directory of Opencast regarding user defined hardcoded
+# filter criteria.
+# If you run Opencast with a shared storage hard links can be used to
+# link files instead of copying them. The storage consumption remains
+# low. But when you backup such a storage with TSM every hardlink is
+# dissolved and you end up with multiple of separated file to be stored
+# and the amount of data that has to stored increases rapidly.
+# Delete potentially unused, old snapshots and reduce the amount of data
+# that has to be processed and stored by the TSM backup.
+#
+# TODO: Make sure the script finishes before generating an exclude list.
+59 18 * * *   root   /usr/bin/timeout 2h /opt/tsm_exclude/asset-delete/run_schedule_asset_delete.sh > /opt/tsm_exclude/asset-delete/run_schedule_asset_delete.log

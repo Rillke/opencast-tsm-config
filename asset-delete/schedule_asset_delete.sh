@@ -129,6 +129,9 @@ info() {
 
 help() {
   echo "Usage: "
+  echo " -l: List episodes in archive."
+  echo " -f: Filter input episodes by specified criteria."
+  echo " -s: Schedule specified Workflow on input episodes."
   echo "   $0 -l | $0 -f | $0 -s"
 }
 

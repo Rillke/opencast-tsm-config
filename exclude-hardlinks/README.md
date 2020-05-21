@@ -58,7 +58,7 @@ necessary data?
 0. Take note of `/opt/tivoli/tsm/client/ba/bin/dsmsched.log`. If your backup run
    time is already close to 24h, you probably can't use an even larger exclude
    list because adding exclude entries will slow TSM's run.
-1. Git clone
+1. Git clone (the `#` is because we did that a root user)
 ```
 # cd /opt
 # git clone https://github.com/Rillke/opencast-tsm-config.git
