@@ -30,6 +30,9 @@ SNAPSHOTS_MUST_BE_OLDER_THAN=30
 # Minimum number of snapshots that will trigger a clean up
 SNAPSHOT_COUNT_THRESHOLD=100
 
+# Directory size (in KB) that will trigger a clean up
+SNAPSHOT_MIN_SIZE=10000
+
 # Opencast archive
 OC_ARCHIVE_DIR="/opt/nfsexport/opencast_prod/opencast/archive/mh_default_org"
 
@@ -55,7 +58,7 @@ list_episodes_in_archive() {
 # input (pipe): episode IDs. One per line.
 # only forward (in pipe) those episodes whose newest contents are older than
 # SNAPSHOTS_MUST_BE_OLDER_THAN days
-filter_episodes_by_modified_date() {
+filter_episodes_by_modified_date_and_size() {
   while IFS= read -r episode_id; do
       cd  "$OC_ARCHIVE_DIR/$episode_id"
 
@@ -65,6 +68,9 @@ filter_episodes_by_modified_date() {
 
       number_of_files_newer=$(find . -mtime -"${SNAPSHOTS_MUST_BE_OLDER_THAN}" -maxdepth 1 -type d | wc -l)
       (("$number_of_files_newer" > "0")) && continue
+
+      directory_size=$(du --no-dereference --summarize . |tail -n 1| cut -f1)
+      (("$directory_size" < "$SNAPSHOT_MIN_SIZE")) && continue
 
       echo "$episode_id"
   done
@@ -144,7 +150,7 @@ case $key in
     shift
     ;;
     -f|--filter)
-    filter_episodes_by_modified_date
+    filter_episodes_by_modified_date_and_size
     shift
     ;;
     -s|--schedule)
