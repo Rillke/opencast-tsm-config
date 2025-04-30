@@ -80,25 +80,20 @@ filter_episodes_by_modified_date_and_size() {
 get_number_of_running_wf() {
   limit=$((OC_MAX_CONCURRENT_WFS+1))
   ret=$(curl $CURL_OPT -f --digest -u "${OC_USER}:${OC_PASSWORD}" -H "X-Requested-Auth: Digest" \
-      "${OC_ADMIN_URL}/api/workflows?filter=state%3Arunning&limit=$limit")
+      "${OC_ADMIN_URL}/workflow/count?state=RUNNING")
   # shellcheck disable=SC2181
   [ $? -ne "0" ] && echo "Get Number of Running WFs failed" && exit
-  len="${#ret}"
-  [ "$len" -lt "5" ] && echo "0" && return
 
-  number=$(echo "$ret" | grep -o '}\s*,\s*{' | wc -l)
-  ((number++))
-  echo "$number"
+  echo "$ret"
 }
 
 is_wf_running_on_episode() {
   episode_id="$1"
-  url="${OC_ADMIN_URL}/api/workflows?filter=state%3Arunning%2Cevent_identifier%3A${episode_id}&limit=1"
+  url="${OC_ADMIN_URL}/workflow/mediaPackage/${episode_id}/hasActiveWorkflows"
   ret=$(curl $CURL_OPT -f --digest -u "${OC_USER}:${OC_PASSWORD}" -H "X-Requested-Auth: Digest" "$url")
   # shellcheck disable=SC2181
   [ $? -ne "0" ] && echo "Get Running WFs on episode failed" && return 1
-  len="${#ret}"
-  [ "$len" -ge "5" ] && echo "1" || echo "0"
+  [ "$ret" = "true" ] && echo "1" || echo "0"
 }
 
 schedule_wf() {
